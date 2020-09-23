@@ -1,18 +1,26 @@
 
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 import Link from 'next/link'
+
+import { useAuth } from '../context/authProvider'
 
 const Login = () => {
 
     const username = useRef();
     const password = useRef();
 
+    const { auth, login } = useAuth()
+
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(`Login details \n username: ${username.current.value} \n password: ${password.current.value}`);
+        // console.log(`Login details \n username: ${username.current.value} \n password: ${password.current.value}`);
+        login(username.current.value, password.current.value);
+        // redirect
 
     }
+    console.log(auth)
+
 
     return (
         <center className="valign-wrapper page-container">
@@ -56,6 +64,34 @@ const Login = () => {
                 </div>
             </div>
 
+        <style jsx>
+            {`
+                .page-container {
+                    height: calc(100vh - 64px);
+                    width: 100%;
+                    display: -ms-flexbox;
+                    display: flex;
+                    color: rgb(255, 255, 255);
+                    padding: 10px;
+                }
+
+                .form-group {
+                    display: inline-block; 
+                    padding: 50px 10px 50px 10px;
+                    border: 1px solid #EEE;
+                    width: 100%
+                }
+                
+                @media (min-width: 600px) {
+                    .form-group{
+                        width: 450px;
+                        padding: 50px;
+                        border-radius: 10px;
+                    }
+                }
+                
+            `}
+        </style>
         </center>
     )
 }

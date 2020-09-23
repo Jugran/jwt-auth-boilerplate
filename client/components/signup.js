@@ -45,12 +45,12 @@ const Signup = () => {
                             </div>
 
                             <div className='input-field col s12'>
-                                <input ref={password} className={passwordDoNotMatch ? 'invalid' : 'valid'} type='password' type='password' name='password' id='password' required />
+                                <input ref={password} className={passwordDoNotMatch ? 'invalid' : 'validate'} type='password' type='password' name='password' id='password' required />
                                 <label htmlFor='password'>Password</label>
                             </div>
 
                             <div className='input-field col s12'>
-                                <input ref={confirmPassword} className={passwordDoNotMatch ? 'invalid' : 'valid'} type='password' name='confirm-password' id='confirm-password' required onChange={matchPassword} />
+                                <input ref={confirmPassword} className={passwordDoNotMatch ? 'invalid' : 'validate'} type='password' name='confirm-password' id='confirm-password' required onChange={matchPassword} />
                                 <label htmlFor='confirm-password'>Confirm Password</label>
                                 <span class="helper-text" data-error="Passwords Do Not match!"></span>
                             </div>
@@ -69,6 +69,35 @@ const Signup = () => {
                     <Link href='/login'>Login</Link>
                 </div>
             </div>
+
+            <style jsx>
+            {`
+                .page-container {
+                    height: calc(100vh - 64px);
+                    width: 100%;
+                    display: -ms-flexbox;
+                    display: flex;
+                    color: rgb(255, 255, 255);
+                    padding: 10px;
+                }
+
+                .form-group {
+                    display: inline-block; 
+                    padding: 50px 10px 50px 10px;
+                    border: 1px solid #EEE;
+                    width: 100%
+                }
+                
+                @media (min-width: 600px) {
+                    .form-group{
+                        width: 450px;
+                        padding: 50px;
+                        border-radius: 10px;
+                    }
+                }
+                
+            `}
+        </style>
         </center>
     )
 }
