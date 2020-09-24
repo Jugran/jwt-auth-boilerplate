@@ -45,7 +45,7 @@ module.exports.signup = async (req, res) => {
     try {
         const user = await User.create({ username, password });
         console.log('user ', user);
-        res.status(201).json({'success': 'OK', 'message': `user with username: ${user.username} created succesfully`});
+        res.status(201).json({'success': 'OK', 'message': `user with username: ${user.username} created successfully`});
         
     } catch (err) {
         console.log(err);

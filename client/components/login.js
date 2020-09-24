@@ -2,26 +2,34 @@
 import { useRef } from 'react'
 import Link from 'next/link'
 
+import { PublicOnlyRoute } from './hoc/customRoutes'
 import { useAuth } from '../context/authProvider'
 
 const Login = () => {
 
     const username = useRef();
     const password = useRef();
+    const { auth, login } = useAuth();
 
-    const { auth, login } = useAuth()
-
-
+    
     const handleSubmit = e => {
         e.preventDefault();
-        // console.log(`Login details \n username: ${username.current.value} \n password: ${password.current.value}`);
         login(username.current.value, password.current.value);
-        // redirect
-
     }
-    console.log(auth)
-
-
+    
+    const handleError = field => {
+        
+        console.log('auth: ', auth);
+        if (auth.message === null){
+            return null
+        }
+        
+        return (auth.message[field] ? auth.message[field] : null)
+    
+    }
+    const usernameError = handleError('username');
+    const passwordError = handleError('password');
+    
     return (
         <center className="valign-wrapper page-container">
 
@@ -37,15 +45,17 @@ const Login = () => {
 
                         <div className='row'>
                             <div className='input-field col s12'>
-                                <input ref={username} className='validate' type='text' name='username' id='username' required />
+                                <input ref={username} className={(usernameError ? 'invalid' : 'validate')} type='text' name='username' id='username' required />
                                 <label htmlFor='username'>Username</label>
+                                <span className="helper-text" data-error={usernameError}></span>
                             </div>
                         </div>
 
                         <div className='row'>
                             <div className='input-field col s12'>
-                                <input ref={password} className='validate' type='password' name='password' id='password' required />
+                                <input ref={password} className={(passwordError ? 'invalid' : 'validate')}  type='password' name='password' id='password' required />
                                 <label htmlFor='password'>Password</label>
+                                <span className="helper-text" data-error={passwordError}></span>
                             </div>
                             <label>
                                 <a className='pink-text' href='#!'><b>Forgot Password?</b></a>
@@ -97,7 +107,7 @@ const Login = () => {
 }
 
 
-export default Login
+export default PublicOnlyRoute(Login)
 
 
 

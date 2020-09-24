@@ -2,21 +2,30 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 
+import { PublicOnlyRoute } from './hoc/customRoutes'
+import { useAuth } from '../context/authProvider'
+import { sign } from 'jsonwebtoken'
+
+
 const Signup = () => {
 
     const username = useRef();
     const password = useRef();
     const confirmPassword = useRef()
 
+    const { auth, signup } = useAuth();
+
+
     const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(`Signup details \n username: ${username.current.value} \n password: ${password.current.value}`);
-
+        // console.log(`Signup details \n username: ${username.current.value} \n password: ${password.current.value}`);
+        signup(username.current.value, password.current.value);
     }
-
+    
     const matchPassword = e => {
+        passwordError = null;
         const checkPass = confirmPassword.current.value;
         if (password.current.value.substr(0, checkPass.length) !== checkPass) {
             // password do not match
@@ -27,6 +36,19 @@ const Signup = () => {
         }
     }
 
+    const handleError = field => {
+        
+        console.log('auth: ', auth);
+        if (auth.message === null){
+            return null
+        }
+        
+        return (auth.message[field] ? auth.message[field] : null)
+    
+    }
+    const usernameError = handleError('username');
+    let passwordError = handleError('password');
+    
     return (
         <center className="valign-wrapper page-container">
 
@@ -40,19 +62,22 @@ const Signup = () => {
 
                         <div className='row'>
                             <div className='input-field col s12'>
-                                <input ref={username} className='validate' type='text' name='username' id='username' required />
+                                <input ref={username} className={(usernameError ? 'invalid' : 'validate')} type='text' name='username' id='username' required />
                                 <label htmlFor='username'>Username</label>
+                                <span className="helper-text" data-error={usernameError}></span>
                             </div>
 
                             <div className='input-field col s12'>
-                                <input ref={password} className={passwordDoNotMatch ? 'invalid' : 'validate'} type='password' type='password' name='password' id='password' required />
+                                <input ref={password} className={passwordDoNotMatch || passwordError ? 'invalid' : 'validate'} type='password' type='password' name='password' id='password' required />
                                 <label htmlFor='password'>Password</label>
+                                <span className="helper-text" data-error={passwordError}></span>
+
                             </div>
 
                             <div className='input-field col s12'>
                                 <input ref={confirmPassword} className={passwordDoNotMatch ? 'invalid' : 'validate'} type='password' name='confirm-password' id='confirm-password' required onChange={matchPassword} />
                                 <label htmlFor='confirm-password'>Confirm Password</label>
-                                <span class="helper-text" data-error="Passwords Do Not match!"></span>
+                                <span className="helper-text" data-error="Passwords Do Not match!"></span>
                             </div>
 
 
@@ -103,7 +128,4 @@ const Signup = () => {
 }
 
 
-export default Signup
-
-
-
+export default PublicOnlyRoute(Signup)

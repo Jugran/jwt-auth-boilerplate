@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 
-const Navbar = (props) => {
-    const is_authenticated = props.auth ? true : false;
+import { useAuth } from '../context/authProvider'
+
+const Navbar = () => {
+    const {auth, logout} = useAuth();
 
     useEffect(() => {
         var elems = document.querySelectorAll('.sidenav');
@@ -18,11 +20,11 @@ const Navbar = (props) => {
                     <a href="#" data-target="navbar" className="sidenav-trigger"><i className="material-icons">menu</i></a>
 
                     <ul className="right hide-on-med-and-down">
-                    {is_authenticated ? (
+                    {auth.authenticated ? (
                         <>
                             <li><Link href="/">Home</Link></li>
                             <li><Link href="/profile">Profile</Link></li>
-                            <li><Link href="/logout">Logout</Link></li>
+                            <li><a onClick={logout}>Logout</a></li>
                         </>
                     ) : (
                     <>
@@ -38,11 +40,11 @@ const Navbar = (props) => {
 
             <ul className="sidenav sidenav-close" id="navbar">
                 <div className="section"></div>
-                    {is_authenticated ? (
+                    {auth.authenticated ? (
                         <>
                             <li><Link href="/">Home</Link></li>
                             <li><Link href="/profile">Profile</Link></li>
-                            <li><Link href="/logout">Logout</Link></li>
+                            <li><a onClick={logout}>Logout</a></li>
                         </>
                     ) : (
                     <>
