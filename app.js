@@ -9,7 +9,7 @@ const verifyAuth = require('./middleware/authMiddleware');
 
 const app = express();
 
-const mongodbURI = 'mongodb+srv://deezee:vroomvroom@node.970z0.mongodb.net/node?retryWrites=true&w=majority'
+const mongodbURI = 'mongodb+srv://DB_URI'
 
 mongoose.connect(mongodbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
     .then(result => app.listen(5000))
